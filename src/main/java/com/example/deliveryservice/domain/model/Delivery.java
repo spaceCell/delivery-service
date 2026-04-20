@@ -70,7 +70,9 @@ public class Delivery {
             String newTrackingNumber
     ) {
         changeOrderId(newOrderId);
-        changeStatus(newStatus);
+        if (newStatus != null) {
+            changeStatus(newStatus);
+        }
         changeDeliveryAddress(newDeliveryAddress);
         changeDeliveryDate(newDeliveryDate);
         changeTimeWindow(newTimeWindow);

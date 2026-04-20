@@ -85,6 +85,36 @@ class DeliveryApiIntegrationTest {
     }
 
     @Test
+    void updateDeliveryWithoutStatusKeepsCurrentStatus() throws Exception {
+        Map<String, Object> createRequest = validRequest("IN_TRANSIT");
+        String createPayload = objectMapper.writeValueAsString(createRequest);
+        MvcResult createResult = mockMvc.perform(
+                        post("/api/deliveries")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(createPayload)
+                )
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.status").value("IN_TRANSIT"))
+                .andReturn();
+
+        Long id = objectMapper.readTree(createResult.getResponse().getContentAsString()).get("id").asLong();
+
+        Map<String, Object> updateRequest = validRequest("CREATED");
+        updateRequest.remove("status");
+        updateRequest.put("trackingNumber", "TRK-1001-NO-STATUS");
+
+        mockMvc.perform(
+                        put("/api/deliveries/{id}", id)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(updateRequest))
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.status").value("IN_TRANSIT"))
+                .andExpect(jsonPath("$.trackingNumber").value("TRK-1001-NO-STATUS"));
+    }
+
+    @Test
     void deleteDeliveryRemovesEntity() throws Exception {
         Long id = createDeliveryAndReturnId();
 
