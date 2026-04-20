@@ -181,6 +181,45 @@ class DeliveryApiIntegrationTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    void businessErrorsDoNotOpenCircuitBreaker() throws Exception {
+        long missingId = Long.MAX_VALUE;
+
+        mockMvc.perform(get("/api/deliveries/{id}", missingId))
+                .andExpect(status().isNotFound());
+
+        Map<String, Object> invalidRequest = validRequest("CREATED");
+        invalidRequest.put("orderId", 0);
+
+        mockMvc.perform(
+                        post("/api/deliveries")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(invalidRequest))
+                )
+                .andExpect(status().isBadRequest());
+
+        mockMvc.perform(get("/api/deliveries/{id}", missingId - 1))
+                .andExpect(status().isNotFound());
+
+        invalidRequest = validRequest("CREATED");
+        invalidRequest.remove("deliveryAddress");
+        mockMvc.perform(
+                        post("/api/deliveries")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(invalidRequest))
+                )
+                .andExpect(status().isBadRequest());
+
+        // If business exceptions are ignored by resilience4j, the breaker stays closed
+        // and a valid request is still processed instead of returning 503.
+        mockMvc.perform(
+                        post("/api/deliveries")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(validRequest("CREATED")))
+                )
+                .andExpect(status().isCreated());
+    }
+
     private Long createDeliveryAndReturnId() throws Exception {
         String payload = objectMapper.writeValueAsString(validRequest("CREATED"));
         MvcResult result = mockMvc.perform(
