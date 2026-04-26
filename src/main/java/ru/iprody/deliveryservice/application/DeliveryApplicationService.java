@@ -21,6 +21,8 @@ import ru.iprody.deliveryservice.domain.repository.DeliveryRepository;
 @Transactional(readOnly = true)
 public class DeliveryApplicationService {
 
+    private static final String DELIVERY_NOT_FOUND_MESSAGE = "Delivery with id %d was not found";
+
     private final DeliveryRepository deliveryRepository;
 
     @Transactional
@@ -69,14 +71,14 @@ public class DeliveryApplicationService {
     @CircuitBreaker(name = "deliveryServiceCircuitBreaker")
     public void delete(Long deliveryId) {
         if (!deliveryRepository.existsById(deliveryId)) {
-            throw new ResourceNotFoundException("Delivery with id " + deliveryId + " was not found");
+            throw new ResourceNotFoundException(DELIVERY_NOT_FOUND_MESSAGE.formatted(deliveryId));
         }
         deliveryRepository.deleteById(deliveryId);
     }
 
     private Delivery getDelivery(Long deliveryId) {
         return deliveryRepository.findById(deliveryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Delivery with id " + deliveryId + " was not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(DELIVERY_NOT_FOUND_MESSAGE.formatted(deliveryId)));
     }
 
     private DeliveryAddress toDeliveryAddress(DeliveryAddressDetails deliveryAddressDetails) {

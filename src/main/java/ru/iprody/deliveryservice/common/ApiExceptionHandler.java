@@ -24,7 +24,10 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(CallNotPermittedException.class)
-    public ResponseEntity<ApiError> handleCircuitBreakerOpen(CallNotPermittedException exception, HttpServletRequest request) {
+    public ResponseEntity<ApiError> handleCircuitBreakerOpen(
+            CallNotPermittedException exception,
+            HttpServletRequest request
+    ) {
         return buildResponse(HttpStatus.SERVICE_UNAVAILABLE, "Service temporarily unavailable", request.getRequestURI());
     }
 

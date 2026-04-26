@@ -45,62 +45,74 @@ public class Delivery {
     @Column(nullable = false)
     private String trackingNumber;
 
-    public Delivery(Long orderId, DeliveryStatus status, DeliveryAddress deliveryAddress, LocalDate deliveryDate,
-                    TimeWindow timeWindow, String trackingNumber) {
-        changeOrderId(orderId);
-        changeStatus(status);
-        changeDeliveryAddress(deliveryAddress);
-        changeDeliveryDate(deliveryDate);
-        changeTimeWindow(timeWindow);
-        changeTrackingNumber(trackingNumber);
+    public Delivery(
+            Long newOrderId,
+            DeliveryStatus newStatus,
+            DeliveryAddress newDeliveryAddress,
+            LocalDate newDeliveryDate,
+            TimeWindow newTimeWindow,
+            String newTrackingNumber
+    ) {
+        changeOrderId(newOrderId);
+        changeStatus(newStatus);
+        changeDeliveryAddress(newDeliveryAddress);
+        changeDeliveryDate(newDeliveryDate);
+        changeTimeWindow(newTimeWindow);
+        changeTrackingNumber(newTrackingNumber);
     }
 
-    public void update(Long orderId, DeliveryStatus status, DeliveryAddress deliveryAddress, LocalDate deliveryDate,
-                       TimeWindow timeWindow, String trackingNumber) {
-        changeOrderId(orderId);
-        changeStatus(status);
-        changeDeliveryAddress(deliveryAddress);
-        changeDeliveryDate(deliveryDate);
-        changeTimeWindow(timeWindow);
-        changeTrackingNumber(trackingNumber);
+    public void update(
+            Long newOrderId,
+            DeliveryStatus newStatus,
+            DeliveryAddress newDeliveryAddress,
+            LocalDate newDeliveryDate,
+            TimeWindow newTimeWindow,
+            String newTrackingNumber
+    ) {
+        changeOrderId(newOrderId);
+        changeStatus(newStatus);
+        changeDeliveryAddress(newDeliveryAddress);
+        changeDeliveryDate(newDeliveryDate);
+        changeTimeWindow(newTimeWindow);
+        changeTrackingNumber(newTrackingNumber);
     }
 
-    public void changeOrderId(Long orderId) {
-        if (orderId == null || orderId <= 0) {
+    public void changeOrderId(Long newOrderId) {
+        if (newOrderId == null || newOrderId <= 0) {
             throw new IllegalArgumentException("Order id must be greater than zero");
         }
-        this.orderId = orderId;
+        orderId = newOrderId;
     }
 
-    public void changeStatus(DeliveryStatus status) {
-        this.status = status == null ? DeliveryStatus.CREATED : status;
+    public void changeStatus(DeliveryStatus newStatus) {
+        status = newStatus == null ? DeliveryStatus.CREATED : newStatus;
     }
 
-    public void changeDeliveryAddress(DeliveryAddress deliveryAddress) {
-        if (deliveryAddress == null) {
+    public void changeDeliveryAddress(DeliveryAddress newDeliveryAddress) {
+        if (newDeliveryAddress == null) {
             throw new IllegalArgumentException("Delivery address must be provided");
         }
-        this.deliveryAddress = deliveryAddress;
+        deliveryAddress = newDeliveryAddress;
     }
 
-    public void changeDeliveryDate(LocalDate deliveryDate) {
-        if (deliveryDate == null) {
+    public void changeDeliveryDate(LocalDate newDeliveryDate) {
+        if (newDeliveryDate == null) {
             throw new IllegalArgumentException("Delivery date must be provided");
         }
-        this.deliveryDate = deliveryDate;
+        deliveryDate = newDeliveryDate;
     }
 
-    public void changeTimeWindow(TimeWindow timeWindow) {
-        if (timeWindow == null) {
+    public void changeTimeWindow(TimeWindow newTimeWindow) {
+        if (newTimeWindow == null) {
             throw new IllegalArgumentException("Time window must be provided");
         }
-        this.timeWindow = timeWindow;
+        timeWindow = newTimeWindow;
     }
 
-    public void changeTrackingNumber(String trackingNumber) {
-        if (trackingNumber == null || trackingNumber.isBlank()) {
+    public void changeTrackingNumber(String newTrackingNumber) {
+        if (newTrackingNumber == null || newTrackingNumber.isBlank()) {
             throw new IllegalArgumentException("Tracking number must be provided");
         }
-        this.trackingNumber = trackingNumber.trim();
+        trackingNumber = newTrackingNumber.trim();
     }
 }

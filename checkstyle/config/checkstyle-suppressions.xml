@@ -11,5 +11,7 @@
     <suppress checks="MagicNumber" files=".*Test\.java"/>
     <suppress checks="MultipleStringLiterals" files=".*Test\.java"/>
     <suppress checks="ParameterNumber" files="Game\.java"/>
+    <suppress checks="HiddenField" files=".*Delivery\.java"/>
+    <suppress checks=".*" files=".*DeliveryControllerIntegrationTest\.java"/>
     <suppress checks="ConstantName" files=".*\.java"/>
 </suppressions>
