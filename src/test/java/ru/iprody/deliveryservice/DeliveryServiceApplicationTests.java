@@ -1,14 +1,12 @@
-package com.example;
+package ru.iprody.deliveryservice;
 
-import com.example.deliveryservice.DeliveryServiceApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = DeliveryServiceApplication.class)
+@SpringBootTest
 class DeliveryServiceApplicationTests {
 
     @Test
     void contextLoads() {
     }
-
 }
