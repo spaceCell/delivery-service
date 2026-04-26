@@ -4,3 +4,10 @@ services:
     container_name: delivery-service
     ports:
       - "8083:8083"
+    networks:
+      - default
+      - shared-services
+
+networks:
+  shared-services:
+    external: true
