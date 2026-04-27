@@ -4,6 +4,8 @@ services:
     container_name: delivery-service
     ports:
       - "8083:8083"
+    environment:
+      TZ: Asia/Almaty
     networks:
       - default
       - shared-services
