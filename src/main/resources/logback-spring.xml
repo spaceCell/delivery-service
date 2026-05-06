@@ -28,7 +28,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.example.deliveryservice" level="DEBUG" additivity="false">
+    <logger name="ru.iprody.deliveryservice" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </logger>
